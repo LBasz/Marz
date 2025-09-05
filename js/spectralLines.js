@@ -81,16 +81,16 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('He2', 'HeII', 'Helium 2',          1640.42,    0, 1, 1, 'shift+5'); // ADDED BY FDG
     this.addSpectralLine('O32', 'OIII]', 'Oxygen 32',        1663,    0, 1, 1, 'shift+6'); // ADDED BY FDG
     this.addSpectralLine('C3', 'CIII',  'Carbon 3',          1908.73,   0, 1, 1, 'shift+v');
-    this.addSpectralLine('Fe2a', 'FeII', 'Iron 2',            2249,      0, 2, 1, 'shift+12'); // ADDED BY EFK
-    this.addSpectralLine('Fe2b', 'FeII', 'Iron 2',            2260,      0, 2, 1, 'shift+11'); // ADDED BY EFK
-    this.addSpectralLine('Fe2c', 'FeII', 'Iron 2',            2344,      0, 2, 1, 'shift+7'); // ADDED BY EFK
-    this.addSpectralLine('Fe2d', 'FeII', 'Iron 2',            2374,      0, 2, 1, 'shift+4'); // ADDED BY EFK
-    this.addSpectralLine('Fe2e', 'FeII', 'Iron 2',            2382,      0, 2, 1, 'shift+1'); // ADDED BY EFK
-    this.addSpectralLine('Fe2f', 'FeII', 'Iron 2',            2586,      0, 2, 1, 'shift+2'); // ADDED BY EFK
-    this.addSpectralLine('Fe2g', 'FeII', 'Iron 2',            2600,      0, 2, 1, 'shift+3'); // ADDED BY EFK
-    this.addSpectralLine('Mn2a', 'MnII', 'Manganese 2',       2606,      0, 2, 1, 'shift+13'); // ADDED BY EFK
-    this.addSpectralLine('Mn2b', 'MnII', 'Manganese 2',       2594,      0, 2, 1, 'shift+14'); // ADDED BY EFK
-    this.addSpectralLine('Mn2c', 'MnII', 'Manganese 2',       2576,      0, 2, 1, 'shift+15'); // ADDED BY EFK
+    this.addSpectralLine('Fe2a', 'FeIIa', 'Iron 2',            2249,      0, 2, 1, 'shift+12'); // ADDED BY EFK
+    this.addSpectralLine('Fe2b', 'FeIIb', 'Iron 2',            2260,      0, 2, 1, 'shift+11'); // ADDED BY EFK
+    this.addSpectralLine('Fe2c', 'FeIIc', 'Iron 2',            2344,      0, 2, 1, 'shift+7'); // ADDED BY EFK
+    this.addSpectralLine('Fe2d', 'FeIId', 'Iron 2',            2374,      0, 2, 1, 'shift+4'); // ADDED BY EFK
+    this.addSpectralLine('Fe2e', 'FeIIe', 'Iron 2',            2382,      0, 2, 1, 'shift+1'); // ADDED BY EFK
+    this.addSpectralLine('Fe2f', 'FeIIf', 'Iron 2',            2586,      0, 2, 1, 'shift+2'); // ADDED BY EFK
+    this.addSpectralLine('Fe2g', 'FeIIg', 'Iron 2',            2600,      0, 2, 1, 'shift+3'); // ADDED BY EFK
+    this.addSpectralLine('Mn2a', 'MnIIa', 'Manganese 2',       2606,      0, 2, 1, 'shift+13'); // ADDED BY EFK
+    this.addSpectralLine('Mn2b', 'MnIIb', 'Manganese 2',       2594,      0, 2, 1, 'shift+14'); // ADDED BY EFK
+    this.addSpectralLine('Mn2c', 'MnIIc', 'Manganese 2',       2576,      0, 2, 1, 'shift+15'); // ADDED BY EFK
     this.addSpectralLine('ZnCr', 'ZnII+CrII', 'combi1',      2606,      0, 2, 1, 'shift+16'); // ADDED BY EFK
     this.addSpectralLine('ZnMg', 'ZnII+MgI', 'combi2',       2606,      0, 2, 1, 'shift+17'); // ADDED BY EFK
     this.addSpectralLine('Mg2','MgII', 'Magnesium 2',        2798.75,   0, 0, 1, 'shift+m');

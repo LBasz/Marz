@@ -78,6 +78,8 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('N5', '[NV]',  'Nitrogen 5',        1240.14,   0, 1, 1, 'shift+t');
     this.addSpectralLine('Si4','Si4', 'Silicon 4',           1400.0,    0, 1, 1, 'shift+s');
     this.addSpectralLine('C4', 'CIV',  'Carbon 4',           1549.06,   0, 1, 1, 'shift+c');
+    this.addSpectralLine('He2', 'HeII', 'Helium 2',          1640.42,    0, 1, 1, 'shift+5'); // ADDED BY FDG
+    this.addSpectralLine('O32', 'OIII]', 'Oxygen 32',        1663,    0, 1, 1, 'shift+6'); // ADDED BY FDG
     this.addSpectralLine('C3', 'CIII',  'Carbon 3',          1908.73,   0, 1, 1, 'shift+v');
     this.addSpectralLine('Mg2','MgII', 'Magnesium 2',        2798.75,   0, 0, 1, 'shift+m');
     this.addSpectralLine('O2', '[OII]',  'Oxygen 2',         3728.485,  0, 1, 1, 'shift+o', [3727.09, 3729.88]);

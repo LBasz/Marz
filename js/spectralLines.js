@@ -91,8 +91,8 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('Mn2a', 'MnIIa', 'Manganese 2a',       2606,      0, 2, 1, 'shift+13'); // ADDED BY EFK
     this.addSpectralLine('Mn2b', 'MnIIb', 'Manganese 2b',       2594,      0, 2, 1, 'shift+14'); // ADDED BY EFK
     this.addSpectralLine('Mn2c', 'MnIIc', 'Manganese 2c',       2576,      0, 2, 1, 'shift+15'); // ADDED BY EFK
-    this.addSpectralLine('ZnCr', 'ZnII+CrII', 'combi1',      2606,      0, 2, 1, 'shift+16'); // ADDED BY EFK
-    this.addSpectralLine('ZnMg', 'ZnII+MgI', 'combi2',       2606,      0, 2, 1, 'shift+17'); // ADDED BY EFK
+    this.addSpectralLine('ZnCr', 'ZnIICrII', 'combi 1',      2606,      0, 2, 1, 'shift+16'); // ADDED BY EFK
+    this.addSpectralLine('ZnMg', 'ZnIIMgI', 'combi 2',       2606,      0, 2, 1, 'shift+17'); // ADDED BY EFK
     this.addSpectralLine('Mg2','MgII', 'Magnesium 2',        2798.75,   0, 0, 1, 'shift+m');
     this.addSpectralLine('O2', '[OII]',  'Oxygen 2',         3728.485,  0, 1, 1, 'shift+o', [3727.09, 3729.88]);
     this.addSpectralLine('Ne3', '[NeIII]',  'Neon 3',        3869.81,   0, 1, 1, '[');

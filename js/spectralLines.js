@@ -94,8 +94,8 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('ZnCr', 'ZnIICrII', 'combi 1',      2062,      0, 2, 1, 'shift+16'); // ADDED BY EFK
     this.addSpectralLine('ZnMg', 'ZnIIMgI', 'combi 2',       2026,      0, 2, 1, 'shift+17'); // ADDED BY EFK
     this.addSpectralLine('Mg2','MgII', 'Magnesium 2',        2798.75,   0, 0, 1, 'shift+m');
-    this.addSpectralLine('Mg2','MgIIa', 'Magnesium 2',        2796,   0, 0, 1, 'shift+m');
-    this.addSpectralLine('Mg2','MgIIb', 'Magnesium 2',        2803,   0, 0, 1, 'shift+m');
+    this.addSpectralLine('Mg2a','MgIIa', 'Magnesium 2',        2796,   0, 0, 1, 'shift+m');
+    this.addSpectralLine('Mg2b','MgIIb', 'Magnesium 2',        2803,   0, 0, 1, 'shift+m');
     this.addSpectralLine('Mg1', 'MgI', 'Magnesiu 1',         2852,      0, 2, 1, 'shift+17'); // ADDED BY EFK
     this.addSpectralLine('O2', '[OII]',  'Oxygen 2',         3728.485,  0, 1, 1, 'shift+o', [3727.09, 3729.88]);
     this.addSpectralLine('Ne3', '[NeIII]',  'Neon 3',        3869.81,   0, 1, 1, '[');

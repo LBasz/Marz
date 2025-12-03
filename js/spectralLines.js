@@ -93,6 +93,8 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('Mn2c', 'MnIIc', 'Manganese 2c',       2576,      0, 2, 1, 'shift+15'); // ADDED BY EFK
     this.addSpectralLine('ZnCr', 'ZnIICrII', 'combi 1',      2062,      0, 2, 1, 'shift+16'); // ADDED BY EFK
     this.addSpectralLine('ZnMg', 'ZnIIMgI', 'combi 2',       2026,      0, 2, 1, 'shift+17'); // ADDED BY EFK
+    this.addSpectralLine('Fe2h', 'FeIIh', 'Iron 2h',      2260.78,      0, 2, 1, 'shift+18'); // ADDED BY EFK
+    this.addSpectralLine('Fe2i', 'FeIIi', 'Iron 2i',       2249.87,      0, 2, 1, 'shift+19'); // ADDED BY EFK
     this.addSpectralLine('Mg2','MgII', 'Magnesium 2',        2798.75,   0, 0, 1, 'shift+m');
     this.addSpectralLine('Mg2a','MgIIa', 'Magnesium 2a',        2796,   0, 0, 1, 'shift+m');
     this.addSpectralLine('Mg2b','MgIIb', 'Magnesium 2b',        2803,   0, 0, 1, 'shift+m');

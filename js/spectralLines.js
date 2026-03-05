@@ -77,10 +77,12 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('Lya','Ly\u03B1', 'Lyman Alpha',    1215.670,  0, 1, 1, 'shift+l');
     this.addSpectralLine('N5', '[NV]',  'Nitrogen 5',        1240.14,   0, 1, 1, 'shift+t');
     this.addSpectralLine('Si4','Si4', 'Silicon 4',           1400.0,    0, 1, 1, 'shift+s');
+    this.addSpectralLine('O4','O4', 'Oxygen 4',           1402.0,    0, 1, 1, 'shift+23'); // ADDED BY LB
     this.addSpectralLine('C4', 'CIV',  'Carbon 4',           1549.06,   0, 1, 1, 'shift+c');
     this.addSpectralLine('He2', 'HeII', 'Helium 2',          1640.42,    0, 1, 1, 'shift+5'); // ADDED BY FDG
     this.addSpectralLine('O32', 'OIII]', 'Oxygen 32',        1663,    0, 1, 1, 'shift+6'); // ADDED BY FDG
-    this.addSpectralLine('C3a', 'CIII]a',  'Carbon 3a',          1906.68,   0, 1, 1, 'shift+22');
+    this.addSpectralLine('NIII','NIII', 'Nitrogen 4',           1750.0,    0, 1, 1, 'shift+24'); // ADDED BY LB
+    this.addSpectralLine('C3a', 'CIII]a',  'Carbon 3a',          1906.68,   0, 1, 1, 'shift+22');  // ADDED BY LB
     this.addSpectralLine('C3b', 'CIII]b',  'Carbon 3b',          1908.68,   0, 1, 1, 'shift+21');    
     this.addSpectralLine('Fe2a', 'FeIIa', 'Iron 2a',            2249,      0, 2, 1, 'shift+12'); // ADDED BY EFK
     this.addSpectralLine('Fe2b', 'FeIIb', 'Iron 2b',            2260,      0, 2, 1, 'shift+11'); // ADDED BY EFK
@@ -100,7 +102,8 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('Mg2a','MgIIa', 'Magnesium 2a',        2796,   0, 0, 1, 'shift+m');
     this.addSpectralLine('Mg2b','MgIIb', 'Magnesium 2b',        2803,   0, 0, 1, 'shift+m');
     this.addSpectralLine('Mg1', 'MgI', 'Magnesiu 1',         2852,      0, 2, 1, 'shift+20'); // ADDED BY EFK
-    this.addSpectralLine('O2', '[OII]',  'Oxygen 2',         3728.485,  0, 1, 1, 'shift+o', [3727.09, 3729.88]);
+    this.addSpectralLine('O2a', '[OII]a',  'Oxygen 2a',         3726.03,  0, 1, 1, 'shift+25'); // ADDED BY LB
+    this.addSpectralLine('O2b', '[OII]b',  'Oxygen 2b',         3728.82,  0, 1, 1, 'shift+26'); // ADDED BY LB
     this.addSpectralLine('Ne3', '[NeIII]',  'Neon 3',        3869.81,   0, 1, 1, '[');
     this.addSpectralLine('K',  'K',   'Potassium',           3933.663,  1, 2, 1, 'shift+k');
     this.addSpectralLine('H',  'H',   'Hydrogen',            3968.468,  1, 2, 1, 'shift+h');
@@ -112,6 +115,7 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('O3d','[OIII]', 'Oxygen 3 Doublet', 5006.843,  1, 1, 1, 'shift+i');
     this.addSpectralLine('Mg', 'Mg',  'Magnesium',           5175.3,    1, 2, 1, 'shift+j');
     this.addSpectralLine('Na', 'Na',  'Sodium',              5894.0,    1, 2, 1, 'shift+n');
+    this.addSpectralLine('OI', 'OI',  'Oxygen',              6300.0,    0, 1, 1, 'shift+27'); // ADDED BY LB
     this.addSpectralLine('N2', '[NII]',  'Nitrogen 2',       6549.84,   0, 1, 1, 'shift+q');
     this.addSpectralLine('Ha', 'H\u03B1',  'Hydrogen Alpha', 6562.80,   1, 0, 1, 'shift+a');
     this.addSpectralLine('N2d', '[NII]','Nitrogen 2 Doublet',6585.23,   0, 1, 1, 'shift+w');

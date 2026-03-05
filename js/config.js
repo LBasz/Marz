@@ -54,12 +54,12 @@ globalConfig.clipValue = 25;
 
 
 // CONFIG FOR REBINNING
-globalConfig.startPowerQ = 2.8;
-globalConfig.endPowerQ = 4.6;
-globalConfig.startPower = 3.3;
-globalConfig.endPower = 4.2;
+globalConfig.startPowerQ = 1.6;
+globalConfig.endPowerQ = 5.6;
+globalConfig.startPower = 1.6;
+globalConfig.endPower = 5.6;
 //global.arraySize = 65536; // Must be a power of two
-globalConfig.arraySize = 32768; // Must be a power of two
+globalConfig.arraySize = 65536; // Must be a power of two (32768 or 65536)
 globalConfig.returnedMax = 1024;
 
 // CONFIG FOR XCORR NORMALISATION

@@ -1,16 +1,20 @@
-# Marz Redshifting Program
+# NeoMarz Redshifting Program
 
 
 This project aims to take spectra from the AAOmega spectrograph and redshift them via an online application, for application in cosmology. It has since been generalised to take spectra from any spectrograph, given it follows a well defined input format.
 
-Instructions for use can be found in the application itself, which you can access at http://samreay.github.io/Marz.
+Instructions for use can be found in the application itself, which you can access at http://lbasz.github.io/Marz.
+
+## Update
+
+In this fork, we expanded the spectral line library for easier spectrum/redshift identification.
 
 ***** 
 
 
 # Local servers
 
-A publicly available server is running via Github-pages at http://samreay.github.io/Marz. Local servers can be start by downloading this project, and (depending on your operating system) running `runServer.bat` or `runServer.sh`. Doing so requires an available Python installation on your path.
+A publicly available server is running via Github-pages at http://lbasz.github.io/Marz. Local servers can be start by downloading this project, and (depending on your operating system) running `runServer.bat` or `runServer.sh`. Doing so requires an available Python installation on your path.
 
 # Command Line Interface
 

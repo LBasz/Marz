@@ -29,7 +29,8 @@ angular.module('servicesZ', ['dialogs.main'])
                         maxSmooth: 7
                     },
                     templateOffset: 0,
-                    onlyQOP0: true,
+                    // Keep "step-through unassigned spectra" behaviour without using legacy QOP 0.
+                    onlyUnassigned: true,
                     templateId: '0',
                     continuum: true,
                     redshift: "0",
@@ -172,8 +173,9 @@ angular.module('servicesZ', ['dialogs.main'])
         var numSpectra = 1;
         var getType = function(qop) {
             switch (qop) {
-                case 4: return "success";
-                case 3: return "info";
+                // QOP color mapping for quality histogram bars.
+                case 9: return "primary";
+                case 3: return "success";
                 case 2: return "warning";
                 case 1: return "danger";
                 default: return "default";
@@ -191,13 +193,15 @@ angular.module('servicesZ', ['dialogs.main'])
             if (oldQop == newQop) {
                 return;
             }
-            if (oldQop != 0) {
+            // Remove previous contribution only if it was an assigned (valid) QOP.
+            if (isValidQOP(oldQop)) {
                 self.addResult(oldQop, -1);
             }
             self.addResult(newQop);
         };
         self.addResult = function(qop, increment) {
-            if (qop == 0) { return; }
+            // Ignore unassigned/invalid QOPs in the quality chart.
+            if (!isValidQOP(qop)) { return; }
             if (typeof increment === 'undefined') increment = 1;
             if (quality.barHash["" + qop] == null) {
                 if (increment > 0) {
@@ -205,7 +209,9 @@ angular.module('servicesZ', ['dialogs.main'])
                     quality.barHash["" + qop] = res;
                     quality.bars.push(res);
                     quality.bars.sort(function(a,b) {
-                        return (a.qop % 6) < (b.qop % 6);
+                        // Enforce display order 1,2,3,9.
+                        var order = {1: 0, 2: 1, 3: 2, 9: 3};
+                        return order[a.qop] - order[b.qop];
                     });
                 }
             } else {
@@ -285,13 +291,13 @@ angular.module('servicesZ', ['dialogs.main'])
             return self.spectraManager.getNumberTotal();
         };
         self.setNextSpectra = function() {
-            if (global.ui.detailed.onlyQOP0) {
+            if (global.ui.detailed.onlyUnassigned) {
                 var original = global.ui.active;
                 var notBackToStart = true;
                 var s = original;
                 while (notBackToStart) {
                     s = self.getNextSpectra(s, true);
-                    if (s.qop == 0) {
+                    if (!isValidQOP(s.qop)) {
                         self.setActive(s);
                         return true;
                     } else if (s == original) {
@@ -346,7 +352,7 @@ angular.module('servicesZ', ['dialogs.main'])
                 }
             }
             if (data.spectra.length > 0) {
-                if (global.ui.detailed.onlyQOP0) {
+                if (global.ui.detailed.onlyUnassigned) {
                     self.setActive(data.spectra[data.spectra.length - 1]);
                     if (!self.setNextSpectra()) {
                         self.setActive(data.spectra[0]);
@@ -359,7 +365,8 @@ angular.module('servicesZ', ['dialogs.main'])
         self.loadLocalStorage = function(spectra, vals) {
             spectra.isMatched = true;
 
-            spectra.setQOP(parseInt(vals['qop']));
+            // Remap legacy QOPs only during load of existing saved data.
+            spectra.setQOP(normaliseLoadedQOP(vals['qop']));
             qualityService.addResult(spectra.qop);
             spectra.manualTemplateID = vals['id'];
             spectra.manualRedshift = parseFloat(vals['z']);
@@ -413,7 +420,7 @@ angular.module('servicesZ', ['dialogs.main'])
             var oldqop = spectra.qop;
             var prior = spectra.automaticResults;
             self.spectraManager.setMatchedResults(results);
-            if (self.spectraManager.autoQOPs && oldqop == 0) {
+            if (self.spectraManager.autoQOPs && !isValidQOP(oldqop)) {
                 qualityService.changeSpectra(oldqop, spectra.autoQOP);
             }
             spectra.processedIntensity2 = results.results.intensity2;
@@ -440,7 +447,8 @@ angular.module('servicesZ', ['dialogs.main'])
             spectra.manualRedshift = parseFloat(redshift);
             var oldQop = spectra.qop;
             spectra.setQOP(qop);
-            qualityService.changeSpectra(oldQop, qop);
+            // Use the stored QOP after validation, not the raw input value.
+            qualityService.changeSpectra(oldQop, spectra.qop);
             if (saveAutomatically) {
                 localStorageService.saveSpectra(spectra);
             }
@@ -509,7 +517,8 @@ angular.module('servicesZ', ['dialogs.main'])
                 }
                 if (real.merges.length == 2) {
                     if (self.needsMerging(real)) {
-                        real.setQOPMerge(0);
+                        // Mark unresolved merge choices as unassigned.
+                        real.setQOPMerge(null);
                     } else {
                         var q0 = real.merges[0].qop;
                         var q1 = real.merges[1].qop;
@@ -541,7 +550,8 @@ angular.module('servicesZ', ['dialogs.main'])
                 }
                 var goodQOP = m1.qop > 2 || m0.qop > 2;
                 var disparate = goodQOP && (m0.qop <= 2 || m1.qop <= 2);
-                var checkAnyway = (m0.qop > 3 && m1.qop == 3) || (m0.qop == 3 && m1.qop > 3);
+                // Preserve the explicit "high confidence disagreement" check using QOP 9 vs QOP 3.
+                var checkAnyway = (m0.qop === 9 && m1.qop === 3) || (m0.qop === 3 && m1.qop === 9);
                 return checkAnyway || disparate || (threshBad && goodQOP);
             }
             return true;
@@ -551,7 +561,8 @@ angular.module('servicesZ', ['dialogs.main'])
             spectraService.setAssignAutoQOPs(false, false);
             localStorageService.setActive(false);
             self.global.ui.merge = true;
-            self.global.filters.qopFilter = 0;
+            // Show unresolved spectra by default in merge mode.
+            self.global.filters.qopFilter = 'unassigned';
             var promises = [];
             for (var i = 0; i < results.length; i++) {
                 var q = $q.defer();
@@ -709,9 +720,10 @@ angular.module('servicesZ', ['dialogs.main'])
                 result["RA"], result["DEC"],result["Mag"], result["Type"], result.filename, helio);
             spectra.automaticBestResults = [{templateId: result["AutoTID"], z: result["AutoZ"], value: result["AutoXCor"]}];
             spectra.setComment(result["Comment"]);
-            spectra.setQOP(parseInt(result["QOP"]));
+            // Remap legacy QOP values only while loading result files.
+            spectra.setQOP(normaliseLoadedQOP(result["QOP"]));
             spectra.setVersion(result['v']);
-            if (spectra.qop > 0) {
+            if (isValidQOP(spectra.qop)) {
                 spectra.manualTemplateID = result["FinTID"];
                 spectra.manualRedshift = result["FinZ"];
             }
@@ -800,13 +812,13 @@ angular.module('servicesZ', ['dialogs.main'])
         };
         self.saveSpectra = function(spectra) {
             if (!active) return;
+            // Persist only spectra that have an assigned valid QOP.
+            if (!isValidQOP(spectra.qop)) return;
             var key = self.getKeyFromSpectra(spectra);
             var val = [resultsGeneratorService.getLocalStorageResult(spectra)];
-            if (val[0]['qop'] != 0) {
-                if (val != null) {
-                    val.unshift(Date.now());
-                    localStorage[key] = JSON.stringify(val);
-                }
+            if (val != null) {
+                val.unshift(Date.now());
+                localStorage[key] = JSON.stringify(val);
             }
         };
         self.loadSpectra = function(spectra) {

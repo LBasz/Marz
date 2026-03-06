@@ -273,28 +273,27 @@ self.coalesceResults = function(templateResults, type, intensity, helio, cmb) {
 /**
  *  Returns an auto QOP from the coalesced matching results. Needs tuning.
  *
- * @returns {number} QOp integer, 1,2,3,4 or 6
+ * @returns {number} QOP integer, 1,2 or 3 (manual assignment can still use 9)
  */
 self.getAutoQOP = function(coalesced) {
     if (coalesced.length < 2) {
-        return 0;
+        // Minimum automatic confidence in the new convention is QOP 1.
+        return 1;
     }
     var mainV = coalesced[0].value;
     var secondV = coalesced[1].value;
 
-    var isStar = templateManager.getTemplateFromId(coalesced[0].templateId).isStar == true;
-    var pqop = 0;
+    var pqop = 1;
     var fom = Math.pow(mainV - 2.5, 0.75) * (mainV / secondV);
+    // Collapse previous high-confidence bins into QOP 3.
     if (fom > 8.5) {
-        pqop = 4;
+        pqop = 3;
     } else if (fom > 4.5) {
         pqop = 3;
     } else if (fom > 3) {
         pqop = 2;
-    } else {
-        pqop = 1;
     }
-    return (pqop > 2 && isStar ? 6 : pqop);
+    return pqop;
 };
 
 module.exports = function() {

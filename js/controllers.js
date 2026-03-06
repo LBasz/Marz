@@ -65,15 +65,14 @@ angular.module('controllersZ', ['ui.router', 'ui.bootstrap', 'servicesZ'])
             if (qop == null) {
                 return string + "default";
             }
-            if (qop >= 6) {
+            // Keep QOP label colours aligned with the new 1/2/3/9 convention.
+            if (qop === 9) {
                 return string + "primary";
-            } else if (qop >= 4) {
+            } else if (qop === 3) {
                 return string + "success";
-            } else if (qop >= 3) {
-                return string + "info";
-            } else if (qop >= 2) {
+            } else if (qop === 2) {
                 return string + "warning";
-            } else if (qop >= 1) {
+            } else if (qop === 1) {
                 return string + "danger";
             } else {
                 return string + "default";
@@ -160,14 +159,9 @@ angular.module('controllersZ', ['ui.router', 'ui.bootstrap', 'servicesZ'])
             {key: ['3', 'num3'], label: '3', controller: "detailed", description: '[Detailed screen] Save with manual QOP of 3', fn: _.throttle(function($scope) {
                 $timeout(function() { $scope.saveManual(3); });
             }, 400, { 'trailing': false})},
-            {key: ['4', 'num4'], label: '4', controller: "detailed", description: '[Detailed screen] Save with manual QOP of 4', fn: _.throttle(function($scope) {
-                $timeout(function() {$scope.saveManual(4);});
-            }, 400, { 'trailing': false})},
-            {key: ['6', 'num6'], label: '6', controller: "detailed", description: '[Detailed screen] Save with manual QOP of 6', fn: _.throttle(function($scope) {
-                $timeout(function() {$scope.saveManual(6);});
-            }, 400, { 'trailing': false})},
-            {key: ['0', 'num0'], label: '0', controller: "detailed", description: '[Detailed screen] Remove QOP result (set QOP to 0)', fn: _.throttle(function($scope) {
-                $timeout(function() { $scope.saveManual(0); });
+            // Replace legacy QOP hotkeys with the new QOP 9 assignment key.
+            {key: ['9', 'num9'], label: '9', controller: "detailed", description: '[Detailed screen] Save with manual QOP of 9', fn: _.throttle(function($scope) {
+                $timeout(function() {$scope.saveManual(9);});
             }, 400, { 'trailing': false})},
             {key: 'z', label: 'z', controller: "detailed", description: '[Detailed screen] Focus on redshift input', fn: function($scope, e) {
                 $scope.setFocusToRedshift();
@@ -382,7 +376,8 @@ angular.module('controllersZ', ['ui.router', 'ui.bootstrap', 'servicesZ'])
         };
         $scope.displayAuto = function() {
             var s = $scope.getActive();
-            return s && s.autoQOP && s.qop == 0 && s.getMatches().length > 0;
+            // Show AutoQOP only while the current spectrum is still unassigned.
+            return s && s.autoQOP && !isValidQOP(s.qop) && s.getMatches().length > 0;
         };
         $scope.getAutoQOPText = function() {
             var s = $scope.getActive();
@@ -873,13 +868,15 @@ angular.module('controllersZ', ['ui.router', 'ui.bootstrap', 'servicesZ'])
         return function(inputs) {
             if (inputs.length == 0) return inputs;
             var f = global.filters;
-            var q = parseInt(f.qopFilter);
+            // Support filtering by explicit QOP values and by unassigned spectra.
+            var q = f.qopFilter === 'unassigned' ? null : parseInt(f.qopFilter, 10);
             var r = f.redshiftFilter.split(':');
             return _.filter(inputs, function(spectra) {
                 if (f.typeFilter !== '*' && spectra.type !== f.typeFilter) return false;
                 if (f.templateFilter !== '*' && spectra.getFinalTemplateID() !== f.templateFilter) return false;
                 if (f.redshiftFilter !== '*' && (spectra.getFinalRedshift() == null || !(spectra.getFinalRedshift() >= parseFloat(r[0]) && spectra.getFinalRedshift() <= parseFloat(r[1])))) return false;
-                if (f.qopFilter !== '*' && spectra.qop !== q) return false;
+                if (f.qopFilter === 'unassigned' && isValidQOP(spectra.qop)) return false;
+                if (f.qopFilter !== '*' && f.qopFilter !== 'unassigned' && spectra.qop !== q) return false;
                 return true;
             })
         }
@@ -892,12 +889,11 @@ angular.module('controllersZ', ['ui.router', 'ui.bootstrap', 'servicesZ'])
 
         $scope.qops = [
             {value: '*', label: "Any QOP"},
-            {value: 4, label: "QOP 4"},
+            {value: 9, label: "QOP 9"},
             {value: 3, label: "QOP 3"},
             {value: 2, label: "QOP 2"},
             {value: 1, label: "QOP 1"},
-            {value: 6, label: "QOP 6"},
-            {value: 0, label: "QOP 0"}
+            {value: 'unassigned', label: "Unassigned"}
         ];
         $scope.temps = [{value: '*', label: "Any template"}];
         angular.forEach(templatesService.getTemplates(), function(template) {
@@ -913,8 +909,9 @@ angular.module('controllersZ', ['ui.router', 'ui.bootstrap', 'servicesZ'])
             mergeService.updateMergeDefaults();
         };
         $scope.getButtonLabel = function(qop) {
-            var labels = {4: ['Great (4)', '4'], 3: ['Good (3)', '3'], 2: ['Possible (2)', '2'], 1: ['Unknown (1)', '1'], 6: ['It\'s a star! (6)', '6'], 0: ['Unassigned (0)', '0']};
-            return labels[qop][$scope.ui.sidebarSmall ? 1 : 0]
+            // Keep sidebar assignment button labels restricted to the four valid QOP values.
+            var labels = {1: "QOP 1", 2: "QOP 2", 3: "QOP 3", 9: "QOP 9"};
+            return labels[qop];
         };
         $scope.getContractButtonLabel = function() {
             return $scope.ui.sidebarSmall ? ">>" : "Contract sidebar";

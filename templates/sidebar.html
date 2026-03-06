@@ -47,19 +47,19 @@
             </div>
             <div ng-if="showSave()" class="top-spacing">
                 <b>Save QOP:</b>
-                <button class="btn btn-block btn-sm btn-success" ng-click="saveManual(4)" tooltip="Saved!"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(4)}}</button>
-                <button class="btn btn-block btn-sm btn-info" ng-click="saveManual(3)" tooltip="Saved!"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(3)}}</button>
-                <button class="btn btn-block btn-sm btn-warning" ng-click="saveManual(2)" tooltip="Saved!"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(2)}}</button>
-                <button class="btn btn-block btn-sm btn-danger" ng-click="saveManual(1)" tooltip="Saved!"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(1)}}</button>
-                <button class="btn btn-block btn-sm btn-primary" ng-click="saveManual(6)" tooltip="Saved!"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(6)}}</button>
-                <button class="btn btn-block btn-sm btn-default" ng-click="saveManual(0)" tooltip="Saved!"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(0)}}</button>
+                <!-- New QOP convention: only four assignable values (1,2,3,9). -->
+                <button class="btn btn-block btn-sm btn-danger" ng-click="saveManual(1)" tooltip="No clear features in the spectrum"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(1)}}</button>
+                <button class="btn btn-block btn-sm btn-warning" ng-click="saveManual(2)" tooltip="LIKELY (~80% reliability)"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(2)}}</button>
+                <button class="btn btn-block btn-sm btn-success" ng-click="saveManual(3)" tooltip="SECURE (100% reliability)"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(3)}}</button>
+                <button class="btn btn-block btn-sm btn-primary" ng-click="saveManual(9)" tooltip="SINGLE-LINE (>90% reliability)"  tooltip-append-to-body="true" tooltip-trigger="focus" tooltip-placement="right">{{getButtonLabel(9)}}</button>
             </div>
             <div class="top-spacing" ng-if="!showSave() || !ui.sidebarSmall">
                 <b>Stepping options:</b>
                 <div class="checkbox checkbox-info checkbox-circle" style="margin-left: 5px;">
-                    <input type="checkbox" id="checkbox1" ng-model="ui.detailed.onlyQOP0">
+                    <!-- Keep stepping focused on spectra that still have no assigned QOP. -->
+                    <input type="checkbox" id="checkbox1" ng-model="ui.detailed.onlyUnassigned">
                     <label for="checkbox1">
-                        QOP 0 only
+                        Unassigned only
                     </label>
                 </div>
             </div>

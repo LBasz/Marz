@@ -16,6 +16,28 @@ for (var i = 0; i < deps.length; i++) {
     require(deps[i])();
 }
 
+// QOP convention used everywhere in this fork.
+var QOP_VALUES = [1, 2, 3, 9];
+// Legacy QOP values are only remapped while loading previously saved files.
+var LEGACY_QOP_MAP = {0: 1, 4: 3, 5: 2, 6: 1};
+function isValidQOP(qop) {
+    return QOP_VALUES.indexOf(qop) !== -1;
+}
+function mapLegacyQOP(qop) {
+    return LEGACY_QOP_MAP.hasOwnProperty(qop) ? LEGACY_QOP_MAP[qop] : qop;
+}
+function normaliseLoadedQOP(qop) {
+    if (qop == null || qop === "") {
+        return null;
+    }
+    var parsed = parseInt(qop, 10);
+    if (isNaN(parsed)) {
+        return null;
+    }
+    parsed = mapLegacyQOP(parsed);
+    return isValidQOP(parsed) ? parsed : null;
+}
+
 /** The spectra class is used to store information about each spectra loaded into marz
  * @param id - the fibre id
  * @param lambda - an array of wavelengths in Angstroms
@@ -84,7 +106,8 @@ function Spectra(id, lambda, intensity, variance, sky, name, ra, dec, magnitude,
     this.mergedUpdated = false;
 
     this.qopLabel = "";
-    this.setQOP(0);
+    // Start as unassigned; only 1/2/3/9 are valid assigned values.
+    this.setQOP(null);
     this.imageZ = null;
     this.imageTID = null;
     this.image = null;
@@ -118,22 +141,29 @@ Spectra.prototype.setVersion = function(version) {
     this.version = version;
 };
 Spectra.prototype.getLabelForQOP = function(qop) {
-    if (qop >= 6) {
+    // Map explicit QOP values to bootstrap label colors.
+    if (qop === 9) {
         return  "label-primary";
-    } else if (qop >= 4) {
+    } else if (qop === 3) {
         return "label-success";
-    } else if (qop >= 3) {
-        return "label-info";
-    } else if (qop >= 2) {
+    } else if (qop === 2) {
         return "label-warning";
-    } else if (qop >= 1) {
+    } else if (qop === 1) {
         return "label-danger";
     } else {
         return "label-default";
     }
 };
 Spectra.prototype.setQOP = function(qop) {
-    if (isNaN(qop)) {
+    // Allow unassigned as null internally, but only accept valid assigned QOPs.
+    if (qop == null || qop === "") {
+        this.qop = null;
+        this.qopLabel = this.getLabelForQOP(this.qop);
+        this.mergedUpdated = true;
+        return;
+    }
+    qop = parseInt(qop, 10);
+    if (!isValidQOP(qop)) {
         return;
     }
     this.qop = qop;
@@ -235,7 +265,8 @@ Spectra.prototype.getFinalRedshift = function() {
     }
 };
 Spectra.prototype.hasRedshiftToBeSaved = function() {
-    return this.getFinalRedshift() != null;
+    // Export only spectra that have both a redshift and a valid assigned QOP.
+    return this.getFinalRedshift() != null && isValidQOP(this.qop);
 };
 Spectra.prototype.getFinalTemplateID = function() {
   if (this.manualRedshift) {
@@ -1013,9 +1044,12 @@ ProcessorManager.prototype.addSpectraListToQueue = function(spectraList) {
 };
 ProcessorManager.prototype.sortJobs = function() {
     this.jobs.sort(function(a,b) {
-        if (a.qop == 0 && b.qop != 0) {
+        // Prioritise spectra without an assigned QOP.
+        var aAssigned = isValidQOP(a.qop);
+        var bAssigned = isValidQOP(b.qop);
+        if (!aAssigned && bAssigned) {
             return -1;
-        } else if (a.qop != 0 && b.qop == 0) {
+        } else if (aAssigned && !bAssigned) {
             return 1;
         } else {
             return a.id > b.id ? 1 : -1;
@@ -1151,7 +1185,7 @@ SpectraManager.prototype.setMatchedResults = function(results) {
     spectra.automaticBestResults = results.results.coalesced;
     spectra.isMatching = false;
     spectra.isMatched = true;
-    if (this.autoQOPs == true && spectra.qop == 0) {
+    if (this.autoQOPs == true && !isValidQOP(spectra.qop)) {
         spectra.setQOP(results.results.autoQOP);
     }
     if (this.pacer == null) {

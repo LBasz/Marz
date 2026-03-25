@@ -157,7 +157,7 @@ SpectralLines.prototype.initialiseDefault = function() {
     this.addSpectralLine('O1a', 'OIa',     'Oxygen 1a',           6300.0,    0, 0, 1, 'shift+27'); 
     this.addSpectralLine('O1b', 'OIb',     'Oxygen 1b',           6363.0,    0, 0, 1, 'shift+27'); 
     this.addSpectralLine('O2a', '[OII]a',  'Oxygen 2a',           3726.03,  0, 0, 1, 'shift+25'); 
-    this.addSpectralLine('O2b', '[OII]b',  'Oxygen 2b',           3728.82,  0, 0, 1, 'shift+26'); 
+    this.addSpectralLine('O2b', '[OII]b',  'Oxygen 2b',           3728.82,  0, 0, 1, 'shift+o'); 
     //this.addSpectralLine('O32', 'OIII]', 'Oxygen 32',           1663.00,    0, 0, 1, 'shift+6'); 
     this.addSpectralLine('O3a', '[OIII]a', 'Oxygen 3a',           4958.91,  0, 0, 1, 'shift+u');
     this.addSpectralLine('O3b', '[OIII]b', 'Oxygen 3b',           5006.84,  0, 0, 1, 'shift+i');
